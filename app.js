@@ -1,7 +1,6 @@
 const express = require('express')
 const sequelize = require('./db/sequelize')
 const bodyParser = require('body-parser')
-require('dotenv').config()
 
 const cors = require('cors')
 const { required } = require('joi')
@@ -55,4 +54,4 @@ app.use(({ res }) => {
     res.status(404).json("erreur page non trouver")
 }) 
 
-app.listen(process.env.PORT, () => `app start to port ${PORT} `)
+app.listen(5000);
