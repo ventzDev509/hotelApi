@@ -3,9 +3,10 @@ const User = require("../models/User");
 const CHAMBRE=require('../models/chambre')
 const RESERVATION=require('../models/Reservation')
 require("dotenv").config()
-const sequelize = new Sequelize(process.env.DBNAME, process.env.DB_USERNAME, process.env.DBPASSWORD, {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
-  dialect:"mysql",
+  port: process.env.DB_PORT,
+  dialect: "mysql",
 });
 
 sequelize 
