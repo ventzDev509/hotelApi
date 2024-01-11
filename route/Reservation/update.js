@@ -36,16 +36,26 @@ module.exports = (app) => {
                                             const msg = "La dete fin du reservation doit etre supperieur a la date debut"
                                             return res.json({ msg })
                                         } else {
-                                            reservation.update(req.body, { where: { id: id } })
-                                                .then(response => {
-                                                    const msg = "Update Success"
-                                                    res.json({ msg })
-                                                    const data = {
-                                                        "status": "occupe"
-                                                    }
-                                                    chambre.update({ ...data }, { where: { codeChambre: dataResponse.codeChambre } })
+                                            console.log(dataResponse.codeChambre)
+                                            chambre.findOne({where:{codeChambre:req.body.codeChambre}})
+                                                .then(chambreExiste=>{
+                                                   if(chambreExiste!=null){
+                                                    reservation.update(req.body, { where: { id: id } })
+                                             
+                                                    .then(response => {
+                                                        const msg = "Update Success"
+                                                        res.json({ msg })
+                                                        const data = {
+                                                            "status": "occupe"
+                                                        }
+                                                        chambre.update({ ...data }, { where: { codeChambre: dataResponse.codeChambre } })
+                                                    })
+                                                    .catch(error => res.json(error))
+                                                   }else{
+                                                    res.status(404).json({msg:"Numero chambre invalide"})
+                                                   }
                                                 })
-                                                .catch(error => res.json(error))
+                                          
                                         }
                                     } else {
                                         return res.json({ msg: "Vous ne pouvez pas faire une reservation pour une date passe" })
