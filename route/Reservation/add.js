@@ -2,7 +2,7 @@ const { reservation } = require('../../db/sequelize')
 const { chambre } = require("../../db/sequelize")
 const addReservationV = require('../../validationDatas/reservationValidation')
 module.exports = (app) => {
-    app.post('/api/reservation/new/:code', (req, res) => {
+    app.post('/api/reservation/new', (req, res) => {
         const date = new Date();
         const dateUserDebut = new Date(req.body.dateDebut);
         const dateFin = new Date(req.body.dateFin)
