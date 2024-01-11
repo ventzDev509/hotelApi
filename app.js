@@ -1,57 +1,72 @@
-const express = require('express')
-const sequelize = require('./db/sequelize')
-const bodyParser = require('body-parser')
+const express = require('express');
+const sequelize = require('./db/sequelize');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
-const cors = require('cors')
-const { required } = require('joi')
-const app = express()
-const PORT = 5000
-sequelize.initDb()
-app.use(cors())
+const cors = require('cors');
+const app = express();
+const PORT = 3000;
+
+// Initialize Sequelize database
+sequelize.initDb();
+
+// Enable Cross-Origin Resource Sharing (CORS)
+app.use(cors());
+
+// Parse incoming JSON requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-require('./route/image')(app)
-// *************GESTION ROUTE UTILISATEUR CRUD************
-// add user
-require('./route/UsersGestion/addUser')(app) 
-// user Login
-require('./route/UsersGestion/login')(app) 
-//update user
-require('./route/UsersGestion/update')(app)
-//delete userSelect all
-require('./route/UsersGestion/delete')(app)
-//show all userSelect:
-require('./route/UsersGestion/afficher')(app)
-//find user by pk
-require('./route/UsersGestion/findUserByPk')(app)
 
- // ---------------------------------
+// ************* USER MANAGEMENT CRUD ROUTES ************
+// Add user
+require('./route/UsersGestion/addUser')(app);
+// User Login
+require('./route/UsersGestion/login')(app);
+// Update user
+require('./route/UsersGestion/update')(app);
+// Delete user
+require('./route/UsersGestion/delete')(app);
+// Show all users
+require('./route/UsersGestion/afficher')(app);
+// Find user by primary key
+require('./route/UsersGestion/findUserByPk')(app);
+
+// ---------------------------------
 // ---------------------------------
 
+// <--- ======================= CRUD ROOM =========================== ===>
+// Add room
+require('./route/gestionChambre/Add')(app);
+// Update room
+require('./route/gestionChambre/update')(app);
+// Find all rooms
+require('./route/gestionChambre/findAll')(app);
+// Delete room
+require('./route/gestionChambre/delete')(app);
+// List available rooms
+require('./route/gestionChambre/findRoomEvalable')(app);
+// List occupied rooms
+require('./route/gestionChambre/findRoomValable')(app);
+// Find room by primary key
+require('./route/gestionChambre/findByPk')(app);
+// Search for all rooms
+require('./route/gestionChambre/search')(app);
+// <-- ---------------- end ---------   -->
 
-// <--- =======================crud chambre========================== ===>
-require('./route/gestionChambre/Add')(app)
-require('./route/gestionChambre/update')(app)
-require('./route/gestionChambre/findAll')(app)
-require('./route/gestionChambre/delete')(app)
-// liste des chambre libre 
-require('./route/gestionChambre/findRoomEvalable')(app)
-// liste des chambre occupe 
-require('./route/gestionChambre/findRoomValable')(app)
-//find by pk
-require('./route/gestionChambre/findByPk')(app)
-//all chambre
-require('./route/gestionChambre/search')(app) 
-// <-- ----------------fin---------   -->
+// ========================== RESERVATION CRUD ===============================
+require('./route/Reservation/add')(app);
+require('./route/Reservation/update')(app)
+require("./route/Reservation/afficher")(app)
+require("./route/Reservation/delete")(app)
 
-// ==========================reservation Crud==============================
-require('./route/Reservation/add')(app)
+// Dashboard 
+require('./route/dashbord/infosUser')(app);
 
-// dashbord 
-require('./route/dashbord/infosUser')(app)
+// Catch-all middleware for handling 404 errors
 app.use(({ res }) => {
-    res.status(404).json("erreur page non trouver")
-}) 
+    res.status(404).json("Error: Page not found");
+});
 
-app.listen(5000);
+// Start the server
+app.listen(PORT, () => console.log(`App started on port ${PORT}`));
