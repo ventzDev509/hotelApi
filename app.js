@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
 const app = express();
-const PORT = 3000;
 
 // Initialize Sequelize database
 sequelize.initDb();
@@ -16,23 +15,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // ************* USER MANAGEMENT CRUD ROUTES ************
 require('./route/UsersGestion/root')(app)
 
-
-//===========================gestion chambre Roote =============================
+//=========================== Room Management Routes =============================
 require('./route/gestionChambre/root')(app)
 
-
-// ========================== RESERVATION Route ===============================
+// ========================== RESERVATION Routes ===============================
 require('./route/Reservation/root')(app)
-
 
 // Dashboard 
 require('./route/dashbord/infosUser')(app);
-
-
 
 // Catch-all middleware for handling 404 errors
 app.use(({ res }) => {
@@ -40,4 +33,4 @@ app.use(({ res }) => {
 });
 
 // Start the server
-app.listen(PORT, () => console.log(`App started on port ${PORT}`));
+app.listen(process.env.APP_PORT, () => console.log(`App started on port ${process.env.APP_PORT}`));
