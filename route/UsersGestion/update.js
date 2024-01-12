@@ -1,29 +1,36 @@
-// appel de instance de la modele user de la table user
+/*
+ * This endpoint updates user information through a POST request.
+ * It requires authentication (isAuth) for the API endpoint.
+ */
+
+// Importing necessary modules and dependencies
 const { user } = require("../../db/sequelize");
 const validation = require("../../validationDatas/userValidation");
-const isAuth=require('../UsersGestion/isAuth')
-require('../../middlewares/isAuth')
+const isAuth = require('../UsersGestion/isAuth');
 
-// creation d'une function  avec le point de terminaison  {/api/user/update/:id}
+// Exporting the route handling function
 module.exports = (app) => {
-  app.post("/api/user/update/",isAuth, (req, res) => {
-    // recuperation de la variable email 
-    const email = req.userEmail
-    // validation des donnees recevoir avec la function {validation}
-    const dataV={
-     "fullName":req.body.fullName,
-     "telephone":req.body.telephone,
-     "address":req.body.address,
-     "dateOfBirth":req.body.dateOfBirth
-    }
-    const { error } = validation(dataV).updateValidation
-    // si les donnees ne sont pas valide retour d'un message json avec l'erreur
-    if (error) return res.status(401).json({ msg: error.details[0].message })
-    //verification si l'utilisateur se trouve dans la base de donnees avant de la modifier
+  app.post("/api/user/update/", isAuth, (req, res) => {
+    // Retrieving the user's email from the authenticated request
+    const email = req.userEmail;
+
+    // Validating the received data with the 'updateValidation' function
+    const dataV = {
+      "fullName": req.body.fullName,
+      "telephone": req.body.telephone,
+      "address": req.body.address,
+      "dateOfBirth": req.body.dateOfBirth
+    };
+    const { error } = validation(dataV).updateValidation;
+
+    // If the data is not valid, return a JSON message with the error
+    if (error) return res.status(401).json({ msg: error.details[0].message });
+
+    // Verifying if the user exists in the database before updating
     user.findOne({ where: { email: email } })
       .then(response => {
         if (response != null) {
-          // a user find 
+          // User found, proceed with the update
           const dta = {
             "fullName": req.body.fullName,
             "address": req.body.address,
@@ -32,29 +39,30 @@ module.exports = (app) => {
             "telephone": req.body.telephone,
             "dateOfBirth": req.body.dateOfBirth,
             "profile": req.body.profile,
-          }
-          // update user
+          };
+
+          // Update the user
           user
             .update(dta, { where: { email: email } })
             .then(
-              _ => { 
+              _ => {
+                // Retrieve the updated user information
                 user.findOne({ where: { email: email } })
                   .then(User => {
-                    const msg = "Modifier Avec Success"
-                    res.status(200).json({ msg })
+                    const msg = "Successfully updated";
+                    res.status(200).json({ msg });
                   })
               }
             )
-            .catch(error => res.status(500).json(error))
+            .catch(error => res.status(500).json(error));
         } else {
-          //user not found
-          res.status(404).json({ msg: `Aucun compte n'a ete trouver ` })
+          // User not found
+          res.status(404).json({ msg: `No account found` });
         }
       })
-      //error server
+      // Server error
       .catch(error => {
-        res.status(404).json({ error })
-      })
-
+        res.status(404).json({ error });
+      });
   });
 };

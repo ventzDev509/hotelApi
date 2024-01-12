@@ -1,24 +1,35 @@
-const { user } = require('../../db/sequelize')
-const isAuth=require('../UsersGestion/isAuth')
+/*
+ * This file handles the retrieval of all user data through a GET request.
+ * It requires authentication (isAuth) for the API endpoint.
+ */
+
+// Importing necessary modules and dependencies
+const { user } = require('../../db/sequelize');
+const isAuth = require('../UsersGestion/isAuth');
+
+// Exporting the route handling function
 module.exports = (app) => {
-    app.get('/api/user',isAuth, (req, res) => {
+    // Define a GET route for retrieving all user data
+    app.get('/api/user', isAuth, (req, res) => {
         user.findAll()
-            .then(userD => {
-                //pakouri tout done yo epi afiche info itilizate api ah dwe gen
-                const data = userD.map(e => (
+            .then(userData => {
+                // Extract relevant user information and format it
+                const data = userData.map(e => (
                     {
-                        "firstName": e.firstName,
-                        "lastName": e.lastName,
-                        "ville": e.ville,
+                        "fullName": e.fullName,
+                        "email": e.email,
+                        "address": e.address,
                         "pays": e.pays,
                         "address": e.address
                     }
-                )
-                )
-                const msg = "la liste de tous les utilisateurs"
-                res.status(200).json({ msg, data })
-            }).catch(error => {
-                res.json({ error })
+
+                ));
+
+                const msg = "List of all users";
+                res.status(200).json({ msg, userData });
             })
-    })
-}
+            .catch(error => {
+                res.status(500).json({ error });
+            });
+    });
+};
