@@ -36,12 +36,10 @@ module.exports = (app) => {
                                             const msg = "La dete fin du reservation doit etre supperieur a la date debut"
                                             return res.json({ msg })
                                         } else {
-                                            console.log(dataResponse.codeChambre)
                                             chambre.findOne({where:{codeChambre:req.body.codeChambre}})
                                                 .then(chambreExiste=>{
                                                    if(chambreExiste!=null){
                                                     reservation.update(req.body, { where: { id: id } })
-                                             
                                                     .then(response => {
                                                         const msg = "Update Success"
                                                         res.json({ msg })

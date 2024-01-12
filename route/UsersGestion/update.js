@@ -6,10 +6,9 @@ require('../../middlewares/isAuth')
 
 // creation d'une function  avec le point de terminaison  {/api/user/update/:id}
 module.exports = (app) => {
-  // app.use(passport.authenticate("jwt", { session: false }))
   app.post("/api/user/update/",isAuth, (req, res) => {
-    // recuperation de la variable id passer en paramette du point de terminaison
-    const email = req.user.email
+    // recuperation de la variable email 
+    const email = req.userEmail
     // validation des donnees recevoir avec la function {validation}
     const dataV={
      "fullName":req.body.fullName,

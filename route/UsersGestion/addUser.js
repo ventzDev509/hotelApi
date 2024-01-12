@@ -16,7 +16,6 @@ module.exports = (app) => {
             .then(response => {
                 //email n'existe pas dans la bdd
                 if (response == null) {
-
                     // hasher le mode de passe en utilisant le module bcrypt
                     bcrypt.hash(req.body.password, 10)
                         .then(hashmdb => {
