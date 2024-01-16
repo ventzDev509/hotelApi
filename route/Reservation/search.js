@@ -13,7 +13,7 @@ module.exports = (app) => {
     app.get("/api/reservation/search/:data", isAuth, (req, res) => {
         // Extract the search parameter from the request
         const search = req.params.data;
-        const user = req.usermail
+        const user = req.userEmail
 
         // Perform a database query to find reservations matching the search parameter
         reservation.findAll({
