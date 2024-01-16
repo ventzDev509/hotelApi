@@ -22,12 +22,7 @@ module.exports = (app) => {
                     { dateDebut: { [Op.like]: `%${search}%` } },
                     { dateFin: { [Op.like]: `%${search}%` } },
                     { codeChambre: { [Op.like]: `%${search}%` } },
-
-                    {
-                        [Op.and]: [
-                            { emailUser: user }
-                        ]
-                    }
+                    { emailUser: user }
                 ]
             }
         })
