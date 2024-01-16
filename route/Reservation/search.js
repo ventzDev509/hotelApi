@@ -6,13 +6,14 @@
 // Importing necessary modules and dependencies
 const { Op } = require('sequelize');
 const { reservation } = require('../../db/sequelize');
-
+const isAuth = require('../UsersGestion/isAuth')
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a GET route for searching reservations
-    app.get("/api/reservation/search/:data", (req, res) => {
+    app.get("/api/reservation/search/:data", isAuth, (req, res) => {
         // Extract the search parameter from the request
         const search = req.params.data;
+        const user = req.usermail
 
         // Perform a database query to find reservations matching the search parameter
         reservation.findAll({
@@ -20,7 +21,13 @@ module.exports = (app) => {
                 [Op.or]: [
                     { dateDebut: { [Op.like]: `%${search}%` } },
                     { dateFin: { [Op.like]: `%${search}%` } },
-                    { codeChambre: { [Op.like]: `%${search}%` } }
+                    { codeChambre: { [Op.like]: `%${search}%` } },
+
+                    {
+                        [Op.and]: [
+                            { emailUser: user }
+                        ]
+                    }
                 ]
             }
         })
