@@ -1,6 +1,4 @@
 const Joi = require("joi");
-
-
 function reservationValidate(body) {
     const AddReservationValidate = Joi.object({
         emailUser: Joi.string().email().required().trim(),
