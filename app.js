@@ -3,6 +3,7 @@ const sequelize = require('./db/sequelize');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const cors = require('cors');
+const { number } = require('joi');
 const app = express();
 
 // Initialize Sequelize database
@@ -14,6 +15,9 @@ app.use(cors());
 // Parse incoming JSON requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+/* ************* Admin ***************** */
+require('./route/Admin/root')(app)
+
 
 // ************* USER MANAGEMENT CRUD ROUTES ************
 require('./route/UsersGestion/root')(app)
@@ -28,6 +32,7 @@ require('./route/Reservation/root')(app)
 require('./route/dashbord/infosUser')(app);
 
 // Catch-all middleware for handling 404 errors
+
 app.use(({ res }) => {
     res.status(404).json("Error: Page not found");
 });
