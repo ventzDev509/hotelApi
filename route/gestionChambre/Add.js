@@ -12,18 +12,18 @@ const addChambreValidation = require('../../validationDatas/roomValidation');
 const { Op } = require('sequelize');
 
 // Configuring Multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        // Specify the destination folder for uploaded files
-        cb(null, "http://ventzdev-hotel.free.nf/images/");
-    },
-    filename: (req, file, cb) => {
-        // Use a unique filename to avoid conflicts
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-        cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
-    },
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         // Specify the destination folder for uploaded files
+//         cb(null, "http://ventzdev-hotel.free.nf/images/");
+//     },
+//     filename: (req, file, cb) => {
+//         // Use a unique filename to avoid conflicts
+//         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+//         cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
+//     },
+// });
+// const upload = multer({ storage: storage });
 
 // Exporting the route handling function
 module.exports = (app) => {
