@@ -28,11 +28,11 @@ const { Op } = require('sequelize');
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a POST route for creating a new room with file upload
-    app.post('/api/room/new',isAuthAdmin, upload.single("image"), (req, res) => {
+    app.post('/api/room/new',isAuthAdmin, (req, res) => {
         // get admin connect
         const admin=req.admin
         // Extract image buffer from the uploaded file
-        const imageBuffer = req.file.buffer;
+        // const imageBuffer = req.file.buffer;
 
         // Validate the received data with the 'addChambreValidate' function
         const { error } = addChambreValidation(req.body).addChambreValidate;
