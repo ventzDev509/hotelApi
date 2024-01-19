@@ -15,7 +15,7 @@ const { Op } = require('sequelize');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // Specify the destination folder for uploaded files
-        cb(null, "image");
+        cb(null, "http://ventzdev-hotel.free.nf/images/");
     },
     filename: (req, file, cb) => {
         // Use a unique filename to avoid conflicts
@@ -57,7 +57,7 @@ module.exports = (app) => {
                 if (response != null) return (res.json({ msg: "Room already exists" }));
 
                 // Create an image URL using the local server address and file path
-                const imageUrl = "http://localhost/db/images/" + req.body.imageUrl;
+                const imageUrl = "http://ventzdev-hotel.free.nf/images/" + req.body.imageUrl;
 
                 // Remove imageUrl from the request body
                 delete req.body.imageUrl;
