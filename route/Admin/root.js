@@ -5,4 +5,5 @@ module.exports=(app)=>{
     require('./post')(app)
     require('./search')(app)
     require("./login")(app)
+    require('./adminInfo')(app)
 }

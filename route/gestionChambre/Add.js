@@ -7,7 +7,9 @@
 const { chambre } = require('../../db/sequelize');
 const multer = require("multer");
 const path = require("path");
+const isAuthAdmin=require("../Admin/auth/isAuth")
 const addChambreValidation = require('../../validationDatas/roomValidation');
+const { Op } = require('sequelize');
 
 // Configuring Multer
 const storage = multer.diskStorage({
@@ -26,7 +28,9 @@ const upload = multer({ storage: storage });
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a POST route for creating a new room with file upload
-    app.post('/api/room/new', upload.single("image"), (req, res) => {
+    app.post('/api/room/new',isAuthAdmin, upload.single("image"), (req, res) => {
+        // get admin connect
+        const admin=req.admin
         // Extract image buffer from the uploaded file
         const imageBuffer = req.file.buffer;
 
@@ -39,11 +43,14 @@ module.exports = (app) => {
         // Check if a room with the specified details already exists
         chambre.findOne({
             where: {
-                roomType: req.body.roomType,
-                codeChambre: req.body.codeChambre,
-                nightlyPrice: req.body.nightlyPrice,
-                numberOfPersons: req.body.numberOfPersons,
-                amenities: req.body.amenities,
+                [Op.or]:{
+                    codeChambre: req.body.codeChambre,
+                    // roomType: req.body.roomType,
+                    // nightlyPrice: req.body.nightlyPrice,
+                    // numberOfPersons: req.body.numberOfPersons,
+                    // amenities: req.body.amenities,
+                }
+               
             }
         })
             .then(response => {
@@ -64,6 +71,7 @@ module.exports = (app) => {
                     "numberOfPersons": req.body.numberOfPersons,
                     "amenities": req.body.amenities,
                     "status": req.body.status,
+                    "admin":admin
                 };
 
                 // Create the new room in the database
@@ -72,6 +80,7 @@ module.exports = (app) => {
                         const msg = "Room added successfully";
                         res.status(200).json({ msg, response });
                     })
+                    .catch(error=>res.json(error))
             });
     });
 };

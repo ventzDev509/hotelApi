@@ -3,7 +3,7 @@ const adminValidate = require('../../validationDatas/adminValidate')
 const isAuthAdmin=require('./auth/isAuth')
 const bcrypt = require('bcrypt')
 module.exports = (app) => {
-    app.post('/api/admin/new',isAuthAdmin, (req, res) => {
+    app.post('/api/admin/new', (req, res) => {
         const { error } = adminValidate(req.body).adminValidate
         if (error) {
             return res.status(400).json(error.details[0].message)

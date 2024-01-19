@@ -13,7 +13,7 @@ const validation = require('../../validationDatas/userValidation');
 module.exports = (app) => {
     // Define a POST route for creating a new user
     app.post('/api/user/new', (req, res) => {
-        // Validate the received data
+        // Validate the received data 
         const { error } = validation(req.body).RegisterValidation;
         // Return an error message if the data is not correct
         if (error) return res.status(400).json({ msg: error.details[0].message });

@@ -26,9 +26,9 @@ const upload = multer({ storage: storage });
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a POST route for updating room information
-    app.post("/api/room/update/:id", upload.single("image"), (req, res) => {
+    app.post("/api/room/update/:idChambre", upload.single("image"), (req, res) => {
         // Extract the room ID from the endpoint parameters
-        const id = req.params.id;
+        const id = req.params.idChambre;
         // Extract the image buffer from the uploaded file
         const imageBuffer = req.file;
         // Validate the received data
@@ -45,7 +45,7 @@ module.exports = (app) => {
         if (error) return res.status(400).json({ msg: error.details[0].message });
 
         // Check if the room exists
-        chambre.findAll({ where: { id: id } })
+        chambre.findAll({ where: { codeChambre: id } })
             .then((response) => {
                 // If the room does not exist, return a 400 Bad Request response
                 if (response.length == 0) return res.status(400).send("La chambre n'existe pas");
@@ -64,7 +64,7 @@ module.exports = (app) => {
                             "status": req.body.status,
                         };
                         // Update the room
-                        chambre.update({ ...data }, { where: { id: id } })
+                        chambre.update({ ...data }, { where: { codeChambre: id } })
                             .then(response => {
                                 const msg = "Chambre modifiée avec succès";
                                 res.status(201).json({ msg, response });

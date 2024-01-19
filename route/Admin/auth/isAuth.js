@@ -16,16 +16,16 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, key);
 
         // Extract the user's email from the decoded token
-        const usermail = decodedToken.username;
+        const admin = decodedToken.username;
 
         // Check if the provided email in the request body matches the decoded email
-        if (req.body.username && req.body.username !== usermail) {
+        if (req.body.username && req.body.username !== admin) {
             const msg = "Invalid identifier";
             return res.status(401).json({ msg });
         }
 
         // Attach the user's email to the request object
-        req.username = usermail;
+        req.admin = admin;
         next();
     } catch (error) {
         // Token verification failed, return an unauthorized status
