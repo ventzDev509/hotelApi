@@ -15,7 +15,7 @@ const { Op } = require('sequelize');
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {
 //         // Specify the destination folder for uploaded files
-//         cb(null, "http://ventzdev-hotel.free.nf/images/");
+//         cb(null, "image");
 //     },
 //     filename: (req, file, cb) => {
 //         // Use a unique filename to avoid conflicts
