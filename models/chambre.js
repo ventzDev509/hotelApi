@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      admin:{
+        type:DataTypes.STRING(100),
+        allowNull:false
+      }
     },
     {
       timestamps: true,
