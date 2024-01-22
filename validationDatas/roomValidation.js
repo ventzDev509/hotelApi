@@ -11,7 +11,6 @@ function chambreValidate(body) {
         amenities: joi.string().trim().required(),
         status: joi.string().required(),
         imageUrl: joi.string().trim().required(),
-        admin:joi.string().required()
     })
 
     const UpdateValidation = joi.object({
