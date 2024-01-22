@@ -30,13 +30,13 @@ module.exports = (app) => {
     // Define a POST route for creating a new room with file upload
     app.post('/api/room/new',isAuthAdmin, (req, res) => {
         // get admin connect
-        const admin=req.admin
+        const adminUser=req.admin
         // Extract image buffer from the uploaded file
         // const imageBuffer = req.file.buffer;
 
         // Validate the received data with the 'addChambreValidate' function
         const { error } = addChambreValidation(req.body).addChambreValidate;
-
+console.log(adminUser)
         // If the data is not valid, return a JSON message with the error
         if (error) return res.status(400).json(error.details[0].message);
 
@@ -71,7 +71,7 @@ module.exports = (app) => {
                     "numberOfPersons": req.body.numberOfPersons,
                     "amenities": req.body.amenities,
                     "status": req.body.status,
-                    "admin":admin
+                    "admin":adminUser
                 };
 
                 // Create the new room in the database
