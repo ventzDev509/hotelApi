@@ -39,7 +39,7 @@ module.exports = (app) => {
                     let data
                     // Create the image URL for storage
                     if (req.body.imageUrl) {
-                        const imageUrl = "http://localhost/db/images/" + req.body.imageUrl;
+                        const imageUrl = "http://ventzdev-hotel.free.nf/images/" + req.body.imageUrl;
                         data = {
                             "roomType": req.body.roomType,
                             "roomDescription": req.body.roomDescription,
