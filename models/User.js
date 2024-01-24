@@ -38,9 +38,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       dateOfBirth: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: "0000-00-00",
+        type: DataTypes.STRING(30),
+        allowNull: true,
       },
       profile: {
         type: DataTypes.STRING,

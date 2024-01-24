@@ -38,6 +38,24 @@ module.exports = (sequelize, DataTypes) => {
         dateFin: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        amountChambre: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        amount: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
+        userAdmin: {
+            type: DataTypes.STRING(100),
+            defaultValue:"user"
+        },
+        status: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: "is running"
         }
     }, {
         timestamps: true,
