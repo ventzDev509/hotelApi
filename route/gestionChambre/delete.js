@@ -9,12 +9,12 @@ const { chambre } = require('../../db/sequelize');
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a POST route for deleting a room by ID
-    app.post("/api/room/delete/:id", (req, res) => {
+    app.post("/api/room/delete/:codeChambre", (req, res) => {
         // Extract the room ID from the request parameters
-        const id = req.params.id;
+        const id = req.params.codeChambre;
 
         // Find the room with the specified ID in the database
-        chambre.findOne({ where: { id: id } })
+        chambre.findOne({ where: { codeChambre: id } })
             .then(response => {
                 // If no room is found, return a JSON message with a 404 status
                 if (!response) {
@@ -22,10 +22,12 @@ module.exports = (app) => {
                     return res.status(404).json({ msg });
                 } else {
                     // If a room is found, delete it from the database
-                    chambre.destroy({ where: { id: id } })
+                    chambre.destroy({ where: { codeChambre: id } })
                         .then(response => {
-                            const msg = "Room successfully deleted";
-                            res.status(201).json({ msg });
+                            if (response) {
+                                const msg = "Room successfully deleted";
+                                res.status(201).json({ msg });
+                            }
                         })
                         .catch(error => console.log(error));
                 }

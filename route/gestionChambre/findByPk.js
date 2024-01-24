@@ -14,7 +14,7 @@ module.exports = (app) => {
         const id = req.params.id;
 
         // Find the room in the database by its ID
-        chambre.findOne({ where: { codeChambre: id } })
+        chambre.findAll({ where: { codeChambre: id } })
             .then(response => {
                 // If the room is found, return a JSON response with a 201 status
                 res.status(201).json(response);
