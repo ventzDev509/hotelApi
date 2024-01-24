@@ -6,7 +6,8 @@ function reservationValidate(body) {
         telephone: Joi.string().trim().required(),
         addresse: Joi.string().trim().required(),
         NumberOfPerson: Joi.number().integer().required(),
-        codeChambre: Joi.string().trim().required(),
+        amount: Joi.number().integer().required(),
+        amountChambre: Joi.number().integer().required(),
         dateDebut: Joi.string().trim().required(),
         dateFin: Joi.string().trim().required()
     })
@@ -20,8 +21,8 @@ function reservationValidate(body) {
         dateFin: Joi.string().trim().required()
     })
     return {
-        addReservationV:AddReservationValidate.validate(body),
-        ValidateUpdateReservation:UpdateReservationValidate.validate(body)
+        addReservationV: AddReservationValidate.validate(body),
+        ValidateUpdateReservation: UpdateReservationValidate.validate(body)
     }
 }
-module.exports=reservationValidate
+module.exports = reservationValidate
