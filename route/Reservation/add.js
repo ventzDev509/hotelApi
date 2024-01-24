@@ -7,11 +7,13 @@
 const { reservation } = require('../../db/sequelize');
 const { chambre } = require('../../db/sequelize');
 const addReservationValidation = require('../../validationDatas/reservationValidation');
-
+const isAuthAdmin=require('../Admin/auth/isAuth')
 // Exporting the route handling function
 module.exports = (app) => {
     // Define a POST route for creating a new reservation
-    app.post('/api/reservation/new', (req, res) => {
+    app.post('/api/reservation/new/:codeChambre',isAuthAdmin, (req, res) => {
+        const adminConnect=req.admin
+        const codeChambre=req.params.codeChambre
         // Get the current date
         const date = new Date();
         // Convert user input dates to Date objects
@@ -26,7 +28,7 @@ module.exports = (app) => {
         // Check if the room is already reserved for the specified dates
         reservation.findOne({
             where: {
-                codeChambre: req.body.codeChambre,
+                codeChambre:codeChambre,
                 dateDebut: req.body.dateDebut,
                 dateFin: req.body.dateFin
             }
@@ -37,7 +39,7 @@ module.exports = (app) => {
                     res.json({ msg });
                 } else {
                     // Check if the specified room exists
-                    chambre.findOne({ where: { codeChambre: req.body.codeChambre } })
+                    chambre.findOne({ where: { codeChambre:codeChambre } })
                         .then(roomResponse => {
                             if (roomResponse != null) {
                                 // Validate the number of persons and room capacity
@@ -56,12 +58,12 @@ module.exports = (app) => {
                                                 return res.json({ msg });
                                             } else {
                                                 // Create the reservation and update room status
-                                                reservation.create(req.body)
+                                                reservation.create({...req.body,codeChambre:codeChambre,amountChambre:req.body.amountChambre,"userAdmin":adminConnect})
                                                     .then(reservationResponse => {
                                                         const msg = "Your reservation has been successfully made";
                                                         res.json({ msg, reservationResponse });
                                                         const data = {
-                                                            "status": "occupied"
+                                                            "status": "occupe"
                                                         };
                                                         chambre.update({ ...data }, { where: { codeChambre: reservationResponse.codeChambre } });
                                                     })
